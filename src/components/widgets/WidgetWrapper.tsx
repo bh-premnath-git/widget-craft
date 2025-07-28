@@ -64,7 +64,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
 
       <div className="h-[calc(100%-64px)] relative perspective-1000">
         {/* Flip Animation Container */}
-        <div className={`absolute inset-0 transition-transform duration-600 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
+        <div className={`absolute inset-0 transition-transform duration-600 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
           {/* Front Face - Chart */}
           <div className={`absolute inset-0 backface-hidden ${isFlipped ? 'opacity-0' : 'opacity-100'}`}>
             <div className="p-4 h-full">

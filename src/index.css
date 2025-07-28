@@ -137,6 +137,7 @@ All colors MUST be HSL.
 @layer utilities {
   .backface-hidden {
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
   
   .rotate-y-180 {
@@ -149,6 +150,14 @@ All colors MUST be HSL.
 
   .preserve-3d {
     transform-style: preserve-3d;
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .duration-600 {
+    transition-duration: 600ms;
   }
 }
 

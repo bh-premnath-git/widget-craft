@@ -52,7 +52,11 @@ const dashboardSlice = createSlice({
     flipWidget: (state, action: PayloadAction<string>) => {
       const widgetId = action.payload;
       if (state.widgets[widgetId]) {
-        state.widgets[widgetId].isFlipped = !state.widgets[widgetId].isFlipped;
+        const newFlippedState = !state.widgets[widgetId].isFlipped;
+        state.widgets[widgetId].isFlipped = newFlippedState;
+        console.log(`[Redux] Widget ${widgetId} flipped state changed to: ${newFlippedState}`);
+      } else {
+        console.error(`[Redux] Widget ${widgetId} not found in state`);
       }
     },
     maximizeWidget: (state, action: PayloadAction<string>) => {

@@ -67,13 +67,12 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
         isRefreshing={isLoading || isRefetching}
       />
 
-      <div className="h-[calc(100%-64px)] relative overflow-hidden">
+      <div className="h-[calc(100%-64px)] relative overflow-hidden perspective-1000">
         {/* Flip Animation Container */}
         <div 
-          className={`absolute inset-0 transition-transform duration-700 ease-in-out ${isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'}`}
+          className={`absolute inset-0 transition-all duration-600 ease-in-out ${isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'}`}
           style={{ 
-            transformStyle: 'preserve-3d',
-            perspective: '1000px'
+            transformStyle: 'preserve-3d'
           }}
         >
           {/* Front Face - Chart */}

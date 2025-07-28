@@ -18,6 +18,7 @@ export const WidgetHeader = ({
   isMaximized, 
   isRefreshing = false 
 }: WidgetHeaderProps) => {
+
   const dispatch = useDispatch();
 
   const handleFlip = (e: React.MouseEvent) => {
@@ -39,14 +40,16 @@ export const WidgetHeader = ({
   };
 
   return (
-    <div className="flex items-center justify-between p-4 bg-widget-header border-b border-widget-border relative z-10">
+    <div 
+      className="widget-header flex items-center justify-between p-4 bg-widget-header border-b border-widget-border relative z-10"
+    >
       <h3 className="text-sm font-semibold text-foreground truncate">{title}</h3>
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"
           size="sm"
           onClick={handleFlip}
-          className="h-8 w-8 p-0 hover:bg-muted relative z-20"
+          className="h-8 w-8 p-0 hover:bg-muted relative z-30"
           title={isFlipped ? "Show Chart" : "Show Data"}
         >
           <RotateCcw className="h-4 w-4" />

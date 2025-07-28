@@ -162,6 +162,26 @@ All colors MUST be HSL.
   transition-property: transform;
 }
 
+.react-grid-item.react-grid-placeholder {
+  background: hsl(var(--primary) / 0.2);
+  opacity: 0.2;
+  transition-duration: 100ms;
+  z-index: 2;
+  user-select: none;
+  border-radius: 8px;
+  border: 2px dashed hsl(var(--primary));
+}
+
+.react-grid-item.resizing {
+  opacity: 0.8;
+  z-index: 3;
+}
+
+.react-grid-item.react-draggable-dragging {
+  transition: none;
+  z-index: 3;
+}
+
 .react-grid-item > .react-resizable-handle {
   position: absolute;
   width: 20px;
@@ -175,4 +195,26 @@ All colors MUST be HSL.
   background-origin: content-box;
   box-sizing: border-box;
   cursor: se-resize;
+  z-index: 10;
+}
+
+.react-grid-item:hover > .react-resizable-handle {
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 4px;
+}
+
+.widget-grid-item {
+  height: 100%;
+  width: 100%;
+}
+
+/* Fix for plotly responsiveness */
+.js-plotly-plot {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.plotly {
+  width: 100% !important;
+  height: 100% !important;
 }

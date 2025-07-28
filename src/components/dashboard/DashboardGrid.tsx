@@ -62,9 +62,15 @@ export const DashboardGrid = ({ className }: DashboardGridProps) => {
         isDraggable={!isGridLocked}
         isResizable={!isGridLocked}
         useCSSTransforms={true}
+        onResizeStop={() => {
+          // Force chart resize after grid resize
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'));
+          }, 100);
+        }}
       >
         {Object.values(widgets).map(widget => (
-          <div key={widget.id}>
+          <div key={widget.id} className="widget-grid-item">
             <WidgetWrapper
               widgetId={widget.id}
               title={widgetTitles[widget.id] || 'Widget'}

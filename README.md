@@ -1,58 +1,4 @@
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/0980277e-c431-495e-8ff9-d3f598622b57
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/0980277e-c431-495e-8ff9-d3f598622b57) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
+Project is built with:
 
 - Vite
 - TypeScript
@@ -60,14 +6,69 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
+📦 Dashboards (Composite Pattern)
+│
+├── 🧩 useDashboardStore / Redux Toolkit (Global State)
+│   └── Manages flip, maximize, refresh state per widget
+│
+├── 🧱 GridLayout (react-grid-layout)
+│   └── Drag & Resize widgets
+│
+├── 🏭 WidgetFactory (Factory Pattern)
+│   ├── ChartWidget
+│   ├── TableWidget
+│   └── SqlViewer
+│
+├── 📦 WidgetWrapper
+│   ├── WidgetHeader (Command Pattern: Expand ⬆️, Refresh 🔄, Flip 🔁)
+│   └── WidgetBody (Strategy Pattern: flip determines view)
+│       ├── FrontFace:
+│       │    └── 📊 Plotly.js Chart Only (data from React Query)
+│       └── BackFace:
+│            └── Tabs:
+│                ├── 📋 TableView (data from React Query)
+│                └── 🧾 SQL Viewer (same query string)
 
-Simply open [Lovable](https://lovable.dev/projects/0980277e-c431-495e-8ff9-d3f598622b57) and click on Share -> Publish.
+not real data just sample example 
+{
+  "plotlyData": [...],        // For chart
+  "plotlyLayout": {...},      // Optional: dynamic layout config
+  "tableData": {
+    "columns": [],
+    "rows": [[], []]
+  },
+  "query": "SELECT name, sales, profit FROM sales_summary"
+}
 
-## Can I connect a custom domain to my Lovable project?
+You click the 🔄 Refresh button on a widget.
 
-Yes, you can!
+It dispatches refreshWidget(widgetId) to:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Update a lastRefreshed: number field in Redux state.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+The useQuery hook in the widget observes lastRefreshed and triggers a new API call.
+
+Factory Pattern
+While not explicitly a standalone Factory class, your widget system does follow a factory-like approach where different widget types (Chart, Table, SQL) are created and configured based on data/props. The pattern is represented in how 
+WidgetWrapper
+ dynamically renders different content views based on widget type.
+
+Command Pattern
+Yes, the WidgetHeader buttons implement a simplified Command Pattern:
+
+Each button encapsulates a specific action (flip, maximize, refresh)
+The actions are decoupled from their execution via Redux dispatch
+Each button handler follows the same pattern: prevent event propagation, dispatch action
+The receiver (widget component) doesn't need to know the details of the command
+Strategy Pattern
+This is accurately implemented in your flip mechanism:
+
+The rendering strategy changes based on the isFlipped state
+Front face and back face are two different rendering strategies
+The container (WidgetWrapper) switches between these strategies
+Each strategy (face) has its own rendering approach but shares the same interface
+Your implementation is a bit more React-oriented than classical OOP patterns, but they follow the core principles:
+
+Factory: Component creation based on type
+Command: Actions encapsulated in handlers
+Strategy: Interchangeable rendering approaches

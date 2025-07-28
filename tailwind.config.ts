@@ -26,7 +26,9 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					light: 'hsl(var(--primary-light))',
+					dark: 'hsl(var(--primary-dark))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -51,6 +53,23 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				// Dashboard specific colors
+				dashboard: {
+					bg: 'hsl(var(--dashboard-bg))'
+				},
+				widget: {
+					bg: 'hsl(var(--widget-bg))',
+					border: 'hsl(var(--widget-border))',
+					header: 'hsl(var(--widget-header))'
+				},
+				chart: {
+					blue: 'hsl(var(--chart-blue))',
+					green: 'hsl(var(--chart-green))',
+					orange: 'hsl(var(--chart-orange))',
+					red: 'hsl(var(--chart-red))',
+					purple: 'hsl(var(--chart-purple))',
+					cyan: 'hsl(var(--chart-cyan))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
@@ -88,7 +107,20 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'flip': 'flip 0.6s ease-in-out',
+				'flip-back': 'flip-back 0.6s ease-in-out'
+			},
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-widget': 'var(--gradient-widget)'
+			},
+			boxShadow: {
+				'widget': 'var(--shadow-widget)',
+				'widget-hover': 'var(--shadow-widget-hover)'
+			},
+			transitionProperty: {
+				'smooth': 'var(--transition-smooth)'
 			}
 		}
 	},

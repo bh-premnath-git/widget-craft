@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WidgetHeader } from './WidgetHeader';
@@ -25,7 +25,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
   const { isFlipped, isMaximized } = widget;
 
   if (isLoading) {
-    return (
+    const loadingCard = (
       <Card className={`bg-widget-bg border-widget-border shadow-widget h-full ${className}`}>
         <WidgetHeader
           widgetId={widgetId}
@@ -39,11 +39,20 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
         </div>
       </Card>
     );
+
+    return isMaximized
+      ? createPortal(
+          <div className="fixed inset-0 z-50 bg-dashboard-bg p-8 overflow-auto">
+            {loadingCard}
+          </div>,
+          document.body
+        )
+      : loadingCard;
   }
 
   if (!data) return null;
 
-  return (
+  const cardContent = (
     <Card className={`bg-widget-bg border-widget-border shadow-widget hover:shadow-widget-hover transition-smooth h-full overflow-hidden ${className}`}>
       <WidgetHeader
         widgetId={widgetId}
@@ -52,10 +61,10 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
         isMaximized={isMaximized}
         isRefreshing={isLoading || isRefetching}
       />
-      
-      <div className="h-[calc(100%-64px)] relative">
+
+      <div className="h-[calc(100%-64px)] relative perspective-1000">
         {/* Flip Animation Container */}
-        <div className={`absolute inset-0 transition-transform duration-600 ${isFlipped ? 'rotate-y-180' : ''}`}>
+        <div className={`absolute inset-0 transition-transform duration-600 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
           {/* Front Face - Chart */}
           <div className={`absolute inset-0 backface-hidden ${isFlipped ? 'opacity-0' : 'opacity-100'}`}>
             <div className="p-4 h-full">
@@ -93,4 +102,13 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
       </div>
     </Card>
   );
+
+  return isMaximized
+    ? createPortal(
+        <div className="fixed inset-0 z-50 bg-dashboard-bg p-8 overflow-auto">
+          {cardContent}
+        </div>,
+        document.body
+      )
+    : cardContent;
 };

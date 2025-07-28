@@ -24,7 +24,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
 
   const { isFlipped, isMaximized } = widget;
 
-  if (isLoading) {
+  if (isLoading || isRefetching) {
     const loadingCard = (
       <Card className={`bg-widget-bg border-widget-border shadow-widget h-full ${className}`}>
         <WidgetHeader
@@ -34,8 +34,13 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
           isMaximized={isMaximized}
           isRefreshing={isLoading || isRefetching}
         />
-        <div className="p-4 h-full">
-          <Skeleton className="w-full h-full" />
+        <div className="p-4 h-full flex flex-col gap-4">
+          <Skeleton className="w-full h-8" />
+          <Skeleton className="w-full flex-1" />
+          <div className="flex gap-2">
+            <Skeleton className="w-20 h-6" />
+            <Skeleton className="w-16 h-6" />
+          </div>
         </div>
       </Card>
     );
@@ -62,11 +67,23 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
         isRefreshing={isLoading || isRefetching}
       />
 
-      <div className="h-[calc(100%-64px)] relative perspective-1000">
+      <div className="h-[calc(100%-64px)] relative overflow-hidden">
         {/* Flip Animation Container */}
-        <div className={`absolute inset-0 transition-transform duration-600 preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`} style={{ transformStyle: 'preserve-3d' }}>
+        <div 
+          className={`absolute inset-0 transition-transform duration-700 ease-in-out ${isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'}`}
+          style={{ 
+            transformStyle: 'preserve-3d',
+            perspective: '1000px'
+          }}
+        >
           {/* Front Face - Chart */}
-          <div className={`absolute inset-0 backface-hidden ${isFlipped ? 'opacity-0' : 'opacity-100'}`}>
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden'
+            }}
+          >
             <div className="p-4 h-full">
               <ChartView
                 data={data.plotlyData}
@@ -77,7 +94,14 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
           </div>
           
           {/* Back Face - Data Tabs */}
-          <div className={`absolute inset-0 backface-hidden rotate-y-180 ${isFlipped ? 'opacity-100' : 'opacity-0'}`}>
+          <div 
+            className="absolute inset-0"
+            style={{ 
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)'
+            }}
+          >
             <Tabs defaultValue="table" className="h-full flex flex-col">
               <div className="px-4 pt-2">
                 <TabsList className="grid w-full grid-cols-2">
@@ -105,8 +129,12 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
 
   return isMaximized
     ? createPortal(
-        <div className="fixed inset-0 z-50 bg-dashboard-bg p-8 overflow-auto">
-          {cardContent}
+        <div className="fixed inset-0 z-50 bg-dashboard-bg overflow-auto">
+          <div className="min-h-screen p-8">
+            <div className="max-w-7xl mx-auto h-[calc(100vh-4rem)]">
+              {cardContent}
+            </div>
+          </div>
         </div>,
         document.body
       )

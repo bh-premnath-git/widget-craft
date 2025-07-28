@@ -112,8 +112,8 @@ export const useWidgetData = (widgetId: string) => {
   return useQuery({
     queryKey: ['widget-data', widgetId, lastRefreshed],
     queryFn: async (): Promise<WidgetData> => {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Simulate real API loading time
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       const data = sampleData[widgetId];
       if (!data) {
@@ -122,7 +122,7 @@ export const useWidgetData = (widgetId: string) => {
       
       return data;
     },
-    staleTime: 30000, // 30 seconds
+    staleTime: 0, // Always refetch when lastRefreshed changes
     refetchOnWindowFocus: false
   });
 };

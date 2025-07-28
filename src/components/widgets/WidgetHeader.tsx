@@ -43,7 +43,7 @@ export const WidgetHeader = ({
     <div 
       className="widget-header flex items-center justify-between p-4 bg-widget-header border-b border-widget-border relative z-10"
     >
-      <h3 className="text-sm font-semibold text-foreground truncate">{title}</h3>
+      <h3 className="widget-drag-handle text-sm font-semibold text-foreground truncate cursor-move">{title}</h3>
       <div className="flex items-center gap-1">
         <Button
           variant="ghost"

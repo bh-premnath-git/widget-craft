@@ -62,7 +62,7 @@ export const DashboardGrid = ({ className }: DashboardGridProps) => {
         isDraggable={!isGridLocked}
         isResizable={!isGridLocked}
         useCSSTransforms={true}
-        draggableCancel=".widget-header, .widget-header *"
+        draggableHandle=".widget-drag-handle"
         onResizeStop={() => {
           // Force chart resize after grid resize
           setTimeout(() => {

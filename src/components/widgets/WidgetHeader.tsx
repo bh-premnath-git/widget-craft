@@ -147,19 +147,37 @@ export const WidgetHeader = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onSelect={(e) => {
+              onSelect={async (e) => {
                 stop(e);
                 const el = document.getElementById(`widget-${widgetId}`);
-                if (el) downloadElementAsPDF(el, `${title}.pdf`);
+                if (!el) return;
+                const back = el.querySelector('[data-face="back"]') as HTMLElement | null;
+                const rotator = el.querySelector('[data-rotator]') as HTMLElement | null;
+                const prevDisplay = back?.style.display;
+                const prevTransform = rotator?.style.transform;
+                if (back) back.style.display = 'none';
+                if (rotator) rotator.style.transform = 'none';
+                await downloadElementAsPDF(el, `${title}.pdf`);
+                if (back) back.style.display = prevDisplay || '';
+                if (rotator) rotator.style.transform = prevTransform || '';
               }}
             >
               Download PDF
             </DropdownMenuItem>
             <DropdownMenuItem
-              onSelect={(e) => {
+              onSelect={async (e) => {
                 stop(e);
                 const el = document.getElementById(`widget-${widgetId}`);
-                if (el) downloadElementAsJPEG(el, `${title}.jpeg`);
+                if (!el) return;
+                const back = el.querySelector('[data-face="back"]') as HTMLElement | null;
+                const rotator = el.querySelector('[data-rotator]') as HTMLElement | null;
+                const prevDisplay = back?.style.display;
+                const prevTransform = rotator?.style.transform;
+                if (back) back.style.display = 'none';
+                if (rotator) rotator.style.transform = 'none';
+                await downloadElementAsJPEG(el, `${title}.jpeg`);
+                if (back) back.style.display = prevDisplay || '';
+                if (rotator) rotator.style.transform = prevTransform || '';
               }}
             >
               Download JPEG

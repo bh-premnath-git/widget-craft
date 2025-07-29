@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { downloadElementAsJPEG, downloadElementAsPDF } from '@/lib/download';
 import {
   Maximize2,
   Minimize2,
@@ -12,11 +13,12 @@ import {
 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import {
+  removeWidget,
   flipWidget,
   toggleMaximize,
   refreshWidget,
   toggleChartTypePicker,
-  toggleColorSchemePicker, 
+  toggleColorSchemePicker,
 } from '@/store/dashboardStore';
 import {
   DropdownMenu,
@@ -128,6 +130,48 @@ export const WidgetHeader = ({
             >
               <Palette className="mr-2 h-4 w-4" />
               Color Scheme
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 hover:bg-muted relative z-20"
+              onClick={stop}
+              title="More"
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem
+              onSelect={(e) => {
+                stop(e);
+                const el = document.getElementById(`widget-${widgetId}`);
+                if (el) downloadElementAsPDF(el, `${title}.pdf`);
+              }}
+            >
+              Download PDF
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={(e) => {
+                stop(e);
+                const el = document.getElementById(`widget-${widgetId}`);
+                if (el) downloadElementAsJPEG(el, `${title}.jpeg`);
+              }}
+            >
+              Download JPEG
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={(e) => {
+                stop(e);
+                dispatch(removeWidget(widgetId));
+              }}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Remove
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -33,7 +33,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
   /* ------------------------------------------------------------------ */
   if (isLoading || isRefetching) {
     const skeleton = (
-      <Card className={`bg-widget-bg border-widget-border shadow-widget h-full ${className}`}>
+      <Card  id={`widget-${widgetId}`}  className={`bg-widget-bg border-widget-border shadow-widget h-full ${className}`}>
         <WidgetHeader
           widgetId={widgetId}
           title={title}
@@ -133,7 +133,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
   );
 
   const card = (
-    <Card className={`bg-widget-bg border-widget-border shadow-widget hover:shadow-widget-hover transition-smooth h-full overflow-hidden ${className}`}>
+    <Card  id={`widget-${widgetId}`} className={`bg-widget-bg border-widget-border shadow-widget hover:shadow-widget-hover transition-smooth h-full overflow-hidden ${className}`}>
       <WidgetHeader
         widgetId={widgetId}
         title={title}

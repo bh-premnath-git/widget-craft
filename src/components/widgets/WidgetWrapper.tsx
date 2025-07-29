@@ -84,6 +84,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
     /* ── Normal flip/card content ── */
     <div className="h-[calc(100%-64px)] relative overflow-hidden perspective-1000">
       <div
+        data-rotator
         className={`absolute inset-0 transition-all duration-600 ease-in-out ${isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
           }`}
         style={{ transformStyle: 'preserve-3d' }}

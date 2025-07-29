@@ -13,8 +13,8 @@ import {
   flipWidget,
   toggleMaximize,
   refreshWidget,
-  toggleChartType,
-  toggleColorScheme,
+  toggleChartTypePicker,
+  toggleColorSchemePicker, 
 } from '@/store/dashboardStore';
 import {
   DropdownMenu,
@@ -112,7 +112,7 @@ export const WidgetHeader = ({
             <DropdownMenuItem
               onSelect={(e) => {
                 stop(e);
-                dispatch(toggleChartType(widgetId));
+                dispatch(toggleChartTypePicker(widgetId));
               }}
             >
               <BarChart3 className="mr-2 h-4 w-4" />
@@ -121,7 +121,7 @@ export const WidgetHeader = ({
             <DropdownMenuItem
               onSelect={(e) => {
                 stop(e);
-                dispatch(toggleColorScheme(widgetId));
+                dispatch(toggleColorSchemePicker(widgetId));
               }}
             >
               <Palette className="mr-2 h-4 w-4" />

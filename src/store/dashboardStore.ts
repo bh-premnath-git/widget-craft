@@ -9,8 +9,8 @@ export type ChartType =
   | 'histogram' | 'box' | 'heatmap' | 'treemap' | 'funnel';
 
 export const CHART_TYPE_ORDER: ChartType[] = [
-  'bar','line','scatter','pie','area',
-  'histogram','box','heatmap','treemap','funnel',
+  'bar', 'line', 'scatter', 'pie', 'area',
+  'histogram', 'box', 'heatmap', 'treemap', 'funnel',
 ];
 
 export type ColorScheme =
@@ -19,8 +19,8 @@ export type ColorScheme =
   | 'turbo' | 'custom';
 
 export const COLOR_SCHEME_ORDER: ColorScheme[] = [
-  'default','viridis','plasma','inferno','magma',
-  'blues','greens','reds','rainbow','sinebow','turbo',
+  'default', 'viridis', 'plasma', 'inferno', 'magma',
+  'blues', 'greens', 'reds', 'rainbow', 'sinebow', 'turbo',
 ];
 
 export type WidgetView = 'chart' | 'table' | 'sql' | 'settings';
@@ -40,6 +40,9 @@ export interface WidgetState {
   chartType: ChartType;
   color: { scheme: ColorScheme; customPalette?: string[] };
 
+  isChartTypePickerOpen: boolean;
+  isColorSchemePickerOpen: boolean;
+
   /* Meta --------------------------------------------------------------- */
   lastRefreshed: number;
   layout: WidgetLayout;
@@ -56,12 +59,14 @@ export interface DashboardState {
 
 const now = () => Date.now();
 
-const DEFAULT_WIDGET: Omit<WidgetState,'id'> = {
+const DEFAULT_WIDGET: Omit<WidgetState, 'id'> = {
   isFlipped: false,
   isMaximized: false,
   view: 'chart',
   chartType: 'bar',
   color: { scheme: 'default' },
+  isChartTypePickerOpen: false,
+  isColorSchemePickerOpen: false,
   lastRefreshed: now(),
   layout: { x: 0, y: 0, w: 4, h: 6 },
 };
@@ -84,7 +89,7 @@ const dashboardSlice = createSlice({
     /* CRUD ------------------------------------------------------------- */
     addWidget: (
       s,
-      { payload }: PayloadAction<WidgetState | { id: string } & Partial<Omit<WidgetState,'id'>>>,
+      { payload }: PayloadAction<WidgetState | { id: string } & Partial<Omit<WidgetState, 'id'>>>,
     ) => {
       const id = payload.id;
       s.widgets[id] = { ...DEFAULT_WIDGET, ...payload, id };
@@ -94,53 +99,59 @@ const dashboardSlice = createSlice({
     },
 
     /* Core toggles ----------------------------------------------------- */
-    flipWidget: (s,{payload}:PayloadAction<string>) => {
-      const w = ensure(s,payload); if (w) w.isFlipped = !w.isFlipped;
+    flipWidget: (s, { payload }: PayloadAction<string>) => {
+      const w = ensure(s, payload); if (w) w.isFlipped = !w.isFlipped;
     },
-    toggleMaximize:(s,{payload}:PayloadAction<string>)=>{
-      const w = ensure(s,payload); if (w) w.isMaximized = !w.isMaximized;
+    toggleMaximize: (s, { payload }: PayloadAction<string>) => {
+      const w = ensure(s, payload); if (w) w.isMaximized = !w.isMaximized;
     },
-    refreshWidget:(s,{payload}:PayloadAction<string>)=>{
-      const w = ensure(s,payload); if (w) w.lastRefreshed = now();
+    refreshWidget: (s, { payload }: PayloadAction<string>) => {
+      const w = ensure(s, payload); if (w) w.lastRefreshed = now();
     },
-    updateWidgetLayout:(s,{payload}:PayloadAction<{id:string;layout:WidgetLayout}>)=>{
-      const w = ensure(s,payload.id); if (w) w.layout = {...w.layout,...payload.layout};
+    updateWidgetLayout: (s, { payload }: PayloadAction<{ id: string; layout: WidgetLayout }>) => {
+      const w = ensure(s, payload.id); if (w) w.layout = { ...w.layout, ...payload.layout };
     },
 
     /* Grid ------------------------------------------------------------- */
-    toggleGridLock:(s)=>{ s.isGridLocked = !s.isGridLocked; },
-    setGridLock:(s,{payload}:PayloadAction<boolean>)=>{ s.isGridLocked = payload; },
+    toggleGridLock: (s) => { s.isGridLocked = !s.isGridLocked; },
+    setGridLock: (s, { payload }: PayloadAction<boolean>) => { s.isGridLocked = payload; },
 
     /* View ------------------------------------------------------------- */
-    setWidgetView:(s,{payload}:PayloadAction<{id:string;view:WidgetView}>)=>{
-      const w = ensure(s,payload.id); if (w) w.view = payload.view;
+    setWidgetView: (s, { payload }: PayloadAction<{ id: string; view: WidgetView }>) => {
+      const w = ensure(s, payload.id); if (w) w.view = payload.view;
     },
 
     /* Chart type ------------------------------------------------------- */
-    setChartType:(s,{payload}:PayloadAction<{id:string;chartType:ChartType}>)=>{
-      const w = ensure(s,payload.id); if (w) w.chartType = payload.chartType;
-    },
-    toggleChartType:(s,{payload}:PayloadAction<string>)=>{
-      const w = ensure(s,payload);
-      if (!w) return;
-      const idx = CHART_TYPE_ORDER.indexOf(w.chartType);
-      w.chartType = CHART_TYPE_ORDER[(idx + 1) % CHART_TYPE_ORDER.length];
+    setChartType: (s, { payload }: PayloadAction<{ id: string; chartType: ChartType }>) => {
+      const w = ensure(s, payload.id); if (w) w.chartType = payload.chartType;
     },
 
     /* Color scheme ----------------------------------------------------- */
-    setColorScheme:(s,{payload}:PayloadAction<{id:string;scheme:ColorScheme;customPalette?:string[]}>)=>{
-      const w = ensure(s,payload.id); if (!w) return;
-      if (payload.scheme==='custom'){
-        w.color = { scheme:'custom', customPalette: payload.customPalette ?? [] };
-      }else{
+    setColorScheme: (s, { payload }: PayloadAction<{ id: string; scheme: ColorScheme; customPalette?: string[] }>) => {
+      const w = ensure(s, payload.id); if (!w) return;
+      if (payload.scheme === 'custom') {
+        w.color = { scheme: 'custom', customPalette: payload.customPalette ?? [] };
+      } else {
         w.color = { scheme: payload.scheme };
       }
     },
-    toggleColorScheme:(s,{payload}:PayloadAction<string>)=>{
-      const w = ensure(s,payload);
+     toggleChartTypePicker: (s, { payload }: PayloadAction<string>) => {
+      const w = ensure(s, payload);
       if (!w) return;
-      const idx = COLOR_SCHEME_ORDER.indexOf(w.color.scheme);
-      w.color = { scheme: COLOR_SCHEME_ORDER[(idx + 1) % COLOR_SCHEME_ORDER.length] };
+      w.isChartTypePickerOpen = !w.isChartTypePickerOpen;
+      if (w.isChartTypePickerOpen) {
+        w.isColorSchemePickerOpen = false; // close the other one
+        w.isFlipped = false;               // stay on front face
+      }
+    },
+    toggleColorSchemePicker: (s, { payload }: PayloadAction<string>) => {
+      const w = ensure(s, payload);
+      if (!w) return;
+      w.isColorSchemePickerOpen = !w.isColorSchemePickerOpen;
+      if (w.isColorSchemePickerOpen) {
+        w.isChartTypePickerOpen = false;
+        w.isFlipped = false;
+      }
     },
   },
 });
@@ -160,9 +171,9 @@ export const {
   setGridLock,
   setWidgetView,
   setChartType,
-  toggleChartType,
   setColorScheme,
-  toggleColorScheme,
+  toggleChartTypePicker,
+  toggleColorSchemePicker,
 } = dashboardSlice.actions;
 
 export const store = configureStore({

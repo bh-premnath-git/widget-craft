@@ -1,5 +1,24 @@
-export const ChartTypeViewer = () => {
-  return (
-    <div>ChartTypeView</div>
-  )
+import { CHART_TYPE_ORDER, ChartType } from '@/store/dashboardStore';
+import { Button } from '@/components/ui/button';
+
+interface ChartTypeViewerProps {
+  selected: ChartType;
+  onChange: (type: ChartType) => void;
 }
+
+export const ChartTypeViewer = ({ selected, onChange }: ChartTypeViewerProps) => {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      {CHART_TYPE_ORDER.map((t) => (
+        <Button
+          key={t}
+          variant={t === selected ? 'default' : 'outline'}
+          className="text-xs capitalize"
+          onClick={() => onChange(t)}
+        >
+          {t}
+        </Button>
+      ))}
+    </div>
+  );
+};

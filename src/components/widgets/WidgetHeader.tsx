@@ -64,7 +64,7 @@ export const WidgetHeader = ({
             stop(e);
             dispatch(flipWidget(widgetId));
           }}
-          className="h-8 w-8 p-0 hover:bg-muted relative z-30"
+          className="h-8 w-8 p-0 hover:bg-muted hover:text-foreground relative z-30"
           title={isFlipped ? 'Show Chart' : 'Show Data'}
         >
           <RotateCcw className="h-4 w-4" />
@@ -78,7 +78,7 @@ export const WidgetHeader = ({
             stop(e);
             dispatch(refreshWidget(widgetId));
           }}
-          className="h-8 w-8 p-0 hover:bg-muted relative z-20"
+          className="h-8 w-8 p-0 hover:bg-muted hover:text-foreground relative z-20"
           disabled={isRefreshing}
           title="Refresh Data"
         >
@@ -93,7 +93,7 @@ export const WidgetHeader = ({
             stop(e);
             dispatch(toggleMaximize(widgetId));
           }}
-          className="h-8 w-8 p-0 hover:bg-muted relative z-20"
+          className="h-8 w-8 p-0 hover:bg-muted hover:text-foreground relative z-20"
           title={isMaximized ? 'Minimize' : 'Maximize'}
         >
           {isMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
@@ -105,7 +105,7 @@ export const WidgetHeader = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 hover:bg-muted relative z-20"
+              className="h-8 w-8 p-0 hover:bg-muted hover:text-foreground relative z-20"
               onClick={stop}
               title="Settings"
             >
@@ -138,7 +138,7 @@ export const WidgetHeader = ({
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 hover:bg-muted relative z-20"
+              className="h-8 w-8 p-0 hover:bg-muted hover:text-foreground relative z-20"
               onClick={stop}
               title="More"
             >

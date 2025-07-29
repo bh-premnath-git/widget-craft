@@ -5,6 +5,8 @@ import { WidgetHeader } from './WidgetHeader';
 import { ChartView } from './ChartView';
 import { TableView } from './TableView';
 import { SqlViewer } from './SqlViewer';
+import { ChartTypeViewer } from './ChartTypeViewer';
+import { ColorSchemeViewer } from './ColorSchemeViewer';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/dashboardStore';
 import { useWidgetData } from '@/hooks/useWidgetData';

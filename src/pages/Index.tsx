@@ -62,7 +62,7 @@ const Index = () => {
         dispatch(addWidget(w));
       }
     });
-  }, [dispatch, widgets]);
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-dashboard-bg">

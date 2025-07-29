@@ -7,11 +7,13 @@ import { Button } from '@/components/ui/button';
 interface ColorSchemeViewerProps {
   selected: ColorScheme;
   onChange: (scheme: ColorScheme, customPalette?: string[]) => void;
+  onApply?: () => void;
 }
 
 export const ColorSchemeViewer = ({
   selected,
   onChange,
+  onApply,
 }: ColorSchemeViewerProps) => {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -26,15 +28,13 @@ export const ColorSchemeViewer = ({
         </Button>
       ))}
 
-      {/* Custom palette stub */}
-      <div className="col-span-full mt-4 text-xs text-muted-foreground">
-        {selected === 'custom' && (
-          <p>
-            Implement your custom‑palette picker here and pass the palette to
-            <code>onChange('custom', paletteArray)</code>.
-          </p>
-        )}
-      </div>
+      {onApply && (
+        <div className="col-span-full flex justify-end mt-3">
+          <Button size="sm" onClick={onApply}>
+            Apply Color Scheme
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

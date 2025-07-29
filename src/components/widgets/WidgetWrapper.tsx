@@ -8,7 +8,10 @@ import { TableView } from './TableView';
 import { SqlViewer } from './SqlViewer';
 import { ChartTypeViewer } from './ChartTypeViewer';
 import { ColorSchemeViewer } from './ColorSchemeViewer';
-import { RootState, setChartType, setColorScheme } from '@/store/dashboardStore';
+import {
+  RootState, setChartType, setColorScheme, toggleChartTypePicker,
+  toggleColorSchemePicker
+} from '@/store/dashboardStore';
 import { useWidgetData } from '@/hooks/useWidgetData';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -25,7 +28,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
   if (!widget) return null;
 
   const { isFlipped, isMaximized, isChartTypePickerOpen, isColorSchemePickerOpen, chartType, color } = widget;
- /* ------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------ */
   /*  Loading placeholder                                               */
   /* ------------------------------------------------------------------ */
   if (isLoading || isRefetching) {
@@ -62,6 +65,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
     <ChartTypeViewer
       selected={chartType}
       onChange={(type) => dispatch(setChartType({ id: widgetId, chartType: type }))}
+      onApply={() => dispatch(toggleChartTypePicker(widgetId))}
     />
   ) : isColorSchemePickerOpen ? (
     <ColorSchemeViewer
@@ -69,6 +73,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
       onChange={(scheme, palette) =>
         dispatch(setColorScheme({ id: widgetId, scheme, customPalette: palette }))
       }
+      onApply={() => dispatch(toggleColorSchemePicker(widgetId))}
     />
   ) : null;
 
@@ -79,9 +84,8 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
     /* ── Normal flip/card content ── */
     <div className="h-[calc(100%-64px)] relative overflow-hidden perspective-1000">
       <div
-        className={`absolute inset-0 transition-all duration-600 ease-in-out ${
-          isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
-        }`}
+        className={`absolute inset-0 transition-all duration-600 ease-in-out ${isFlipped ? '[transform:rotateY(180deg)]' : '[transform:rotateY(0deg)]'
+          }`}
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front (chart) */}
@@ -90,7 +94,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
           <div className="p-2 h-full">
-            <ChartView data={data.plotlyData} layout={data.plotlyLayout} widgetId={widgetId} />
+            <ChartView data={data.plotlyData} layout={data.plotlyLayout} widgetId={widgetId} chartType={chartType} color={color} />
           </div>
         </div>
 
@@ -143,12 +147,12 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
 
   return isMaximized
     ? createPortal(
-        <div className="fixed inset-0 z-50 bg-dashboard-bg overflow-auto">
-          <div className="min-h-screen p-4">
-            <div className="max-w-7xl mx-auto h-[calc(100vh-2rem)]">{card}</div>
-          </div>
-        </div>,
-        document.body,
-      )
+      <div className="fixed inset-0 z-50 bg-dashboard-bg overflow-auto">
+        <div className="min-h-screen p-4">
+          <div className="max-w-7xl mx-auto h-[calc(100vh-2rem)]">{card}</div>
+        </div>
+      </div>,
+      document.body,
+    )
     : card;
 };

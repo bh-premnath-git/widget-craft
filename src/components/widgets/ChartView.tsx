@@ -1,14 +1,38 @@
 import Plot from 'react-plotly.js';
 import { useEffect, useRef } from 'react';
+import { ChartType, ColorScheme } from '@/store/dashboardStore';
+import { getColorPalette } from '@/lib/colorSchemes';
 
 interface ChartViewProps {
   data: any[];
   layout?: any;
   widgetId: string;
+  chartType: ChartType;
+  color: { scheme: ColorScheme; customPalette?: string[] };
 }
 
-export const ChartView = ({ data, layout, widgetId }: ChartViewProps) => {
+export const ChartView = ({ data, layout, widgetId, chartType, color }: ChartViewProps) => {
+
   const plotRef = useRef<any>(null);
+
+   const palette = getColorPalette(color.scheme, color.customPalette);
+
+  const processedData = data.map((trace: any, idx: number) => {
+    const traceColor = palette[idx % palette.length];
+    const marker = { ...(trace.marker || {}) };
+
+    if (chartType === 'pie') {
+      marker.colors = palette;
+    } else {
+      marker.color = traceColor;
+    }
+
+    return {
+      ...trace,
+      type: chartType,
+      marker,
+    };
+  });
 
   const defaultLayout = {
     margin: { t: 10, b: 30, l: 40, r: 15 },
@@ -16,6 +40,7 @@ export const ChartView = ({ data, layout, widgetId }: ChartViewProps) => {
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',
     autosize: true,
+    colorway: palette,
     ...layout
   };
 
@@ -28,13 +53,13 @@ export const ChartView = ({ data, layout, widgetId }: ChartViewProps) => {
     }, 100);
 
     return () => clearTimeout(timer);
-  }, []);
+  },  [chartType, color.scheme]);
 
   return (
     <div className="w-full h-full">
       <Plot
         ref={plotRef}
-        data={data}
+        data={processedData}
         layout={defaultLayout}
         config={{
           displayModeBar: false,

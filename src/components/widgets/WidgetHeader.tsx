@@ -147,19 +147,29 @@ export const WidgetHeader = ({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem
-              onSelect={(e) => {
+              onSelect={async (e) => {
                 stop(e);
                 const el = document.getElementById(`widget-${widgetId}`);
-                if (el) downloadElementAsPDF(el, `${title}.pdf`);
+                if (!el) return;
+                const back = el.querySelector('[data-face="back"]') as HTMLElement | null;
+                const prevDisplay = back?.style.display;
+                if (back) back.style.display = 'none';
+                await downloadElementAsPDF(el, `${title}.pdf`);
+                if (back) back.style.display = prevDisplay || '';
               }}
             >
               Download PDF
             </DropdownMenuItem>
             <DropdownMenuItem
-              onSelect={(e) => {
+              onSelect={async (e) => {
                 stop(e);
                 const el = document.getElementById(`widget-${widgetId}`);
-                if (el) downloadElementAsJPEG(el, `${title}.jpeg`);
+                if (!el) return;
+                const back = el.querySelector('[data-face="back"]') as HTMLElement | null;
+                const prevDisplay = back?.style.display;
+                if (back) back.style.display = 'none';
+                await downloadElementAsJPEG(el, `${title}.jpeg`);
+                if (back) back.style.display = prevDisplay || '';
               }}
             >
               Download JPEG

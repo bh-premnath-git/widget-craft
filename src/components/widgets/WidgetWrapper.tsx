@@ -91,6 +91,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
         {/* Front (chart) */}
         <div
           className="absolute inset-0"
+          data-face="front"
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
         >
           <div className="p-2 h-full">
@@ -101,6 +102,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
         {/* Back (table / SQL) */}
         <div
           className="absolute inset-0"
+          data-face="back"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',

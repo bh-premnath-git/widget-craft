@@ -3,6 +3,8 @@ import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit';
 export interface WidgetState {
   id: string;
   isFlipped: boolean;
+  ischartView: boolean;
+  isColorScheme: boolean;
   isMaximized: boolean;
   lastRefreshed: number;
   layout: {
@@ -19,29 +21,7 @@ export interface DashboardState {
 }
 
 const initialState: DashboardState = {
-  widgets: {
-    'chart-widget-1': {
-      id: 'chart-widget-1',
-      isFlipped: false,
-      isMaximized: false,
-      lastRefreshed: Date.now(),
-      layout: { x: 0, y: 0, w: 6, h: 4 }
-    },
-    'chart-widget-2': {
-      id: 'chart-widget-2',
-      isFlipped: false,
-      isMaximized: false,
-      lastRefreshed: Date.now(),
-      layout: { x: 6, y: 0, w: 6, h: 4 }
-    },
-    'table-widget-1': {
-      id: 'table-widget-1',
-      isFlipped: false,
-      isMaximized: false,
-      lastRefreshed: Date.now(),
-      layout: { x: 0, y: 4, w: 12, h: 6 }
-    }
-  },
+  widgets: {},
   isGridLocked: false
 };
 
@@ -86,7 +66,31 @@ const dashboardSlice = createSlice({
     },
     removeWidget: (state, action: PayloadAction<string>) => {
       delete state.widgets[action.payload];
-    }
+    },
+    toggleChartView: (state, action: PayloadAction<string>) => {
+      const widgetId = action.payload;
+      if (state.widgets[widgetId]) {
+        state.widgets[widgetId].ischartView = !state.widgets[widgetId].ischartView;
+      }
+    },
+    toggleColorScheme: (state, action: PayloadAction<string>) => {
+      const widgetId = action.payload;
+      if (state.widgets[widgetId]) {
+        state.widgets[widgetId].isColorScheme = !state.widgets[widgetId].isColorScheme;
+      }
+    },
+    setChartView: (state, action: PayloadAction<{ id: string; value: boolean }>) => {
+      const { id, value } = action.payload;
+      if (state.widgets[id]) {
+        state.widgets[id].ischartView = value;
+      }
+    },
+    setColorScheme: (state, action: PayloadAction<{ id: string; value: boolean }>) => {
+      const { id, value } = action.payload;
+      if (state.widgets[id]) {
+        state.widgets[id].isColorScheme = value;
+      }
+    },
   }
 });
 
@@ -97,7 +101,11 @@ export const {
   updateWidgetLayout,
   toggleGridLock,
   addWidget,
-  removeWidget
+  removeWidget,
+  toggleChartView,
+  toggleColorScheme,
+  setChartView,
+  setColorScheme
 } = dashboardSlice.actions;
 
 export const store = configureStore({

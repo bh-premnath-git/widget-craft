@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom';
+import { useSelector } from 'react-redux';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { WidgetHeader } from './WidgetHeader';
@@ -7,7 +8,6 @@ import { TableView } from './TableView';
 import { SqlViewer } from './SqlViewer';
 import { ChartTypeViewer } from './ChartTypeViewer';
 import { ColorSchemeViewer } from './ColorSchemeViewer';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/store/dashboardStore';
 import { useWidgetData } from '@/hooks/useWidgetData';
 import { Skeleton } from '@/components/ui/skeleton';

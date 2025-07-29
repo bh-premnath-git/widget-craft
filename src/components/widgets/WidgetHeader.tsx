@@ -7,6 +7,8 @@ import {
   Settings,
   BarChart3,
   Palette,
+  MoreHorizontal,
+  Trash2,
 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import {

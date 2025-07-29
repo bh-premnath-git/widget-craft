@@ -20,7 +20,7 @@ export const TableView = ({ columns, rows }: TableViewProps) => {
         <TableHeader>
           <TableRow>
             {columns.map((column, index) => (
-              <TableHead key={index} className="text-xs font-semibold">
+              <TableHead key={index} className="text-xs font-semibold py-2 px-3">
                 {column}
               </TableHead>
             ))}
@@ -30,7 +30,7 @@ export const TableView = ({ columns, rows }: TableViewProps) => {
           {rows.map((row, rowIndex) => (
             <TableRow key={rowIndex}>
               {row.map((cell, cellIndex) => (
-                <TableCell key={cellIndex} className="text-xs">
+                <TableCell key={cellIndex} className="text-xs py-1 px-3">
                   {cellIndex === columns.length - 1 && typeof cell === 'number' ? (
                     <span className="font-semibold text-primary">{cell}</span>
                   ) : (

@@ -11,7 +11,7 @@ export const ChartView = ({ data, layout, widgetId }: ChartViewProps) => {
   const plotRef = useRef<any>(null);
 
   const defaultLayout = {
-    margin: { t: 50, b: 50, l: 50, r: 20 },
+    margin: { t: 10, b: 30, l: 40, r: 15 },
     font: { family: 'Inter, sans-serif', size: 12 },
     paper_bgcolor: 'rgba(0,0,0,0)',
     plot_bgcolor: 'rgba(0,0,0,0)',

@@ -34,7 +34,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
           isMaximized={isMaximized}
           isRefreshing={isLoading || isRefetching}
         />
-        <div className="p-4 h-full flex flex-col gap-4">
+        <div className="p-2 h-full flex flex-col gap-3">
           <Skeleton className="w-full h-8" />
           <Skeleton className="w-full flex-1" />
           <div className="flex gap-2">
@@ -47,7 +47,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
 
     return isMaximized
       ? createPortal(
-          <div className="fixed inset-0 z-50 bg-dashboard-bg p-8 overflow-auto">
+          <div className="fixed inset-0 z-50 bg-dashboard-bg p-4 overflow-auto">
             {loadingCard}
           </div>,
           document.body
@@ -83,7 +83,7 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
               WebkitBackfaceVisibility: 'hidden'
             }}
           >
-            <div className="p-4 h-full">
+            <div className="p-2 h-full">
               <ChartView
                 data={data.plotlyData}
                 layout={data.plotlyLayout}
@@ -102,13 +102,13 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
             }}
           >
             <Tabs defaultValue="table" className="h-full flex flex-col">
-              <div className="px-4 pt-2">
+              <div className="px-2 pt-1">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="table" className="text-xs">Table View</TabsTrigger>
                   <TabsTrigger value="sql" className="text-xs">SQL Query</TabsTrigger>
                 </TabsList>
               </div>
-              <div className="flex-1 p-4 pt-2">
+              <div className="flex-1 p-2 pt-1">
                 <TabsContent value="table" className="h-full m-0">
                   <TableView
                     columns={data.tableData.columns}
@@ -129,8 +129,8 @@ export const WidgetWrapper = ({ widgetId, title, className }: WidgetWrapperProps
   return isMaximized
     ? createPortal(
         <div className="fixed inset-0 z-50 bg-dashboard-bg overflow-auto">
-          <div className="min-h-screen p-8">
-            <div className="max-w-7xl mx-auto h-[calc(100vh-4rem)]">
+          <div className="min-h-screen p-4">
+            <div className="max-w-7xl mx-auto h-[calc(100vh-2rem)]">
               {cardContent}
             </div>
           </div>
